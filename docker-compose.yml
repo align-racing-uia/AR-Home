@@ -1,0 +1,25 @@
+version: '3'
+services:
+  home-db:
+    image: "postgres"
+    expose:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - home-data:/var/lib/postgresql/data
+
+  home-api:
+    build: ar-home-backend/
+    depends_on:
+      - home-db
+    ports:
+      - 5000:5000
+
+  home-web:
+    build: ar-home-frontend/
+    ports:
+      - 8080:8080
+
+volumes:
+  home-data:
