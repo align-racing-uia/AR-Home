@@ -42,17 +42,16 @@ namespace web_api
                 //services.AddDbContext<ApplicationDbContext>(options =>
                 //    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql("Host=home-db;Port=5432;Username=postgres;Password=Password1.;Database=postgres;"));
+                    options.UseNpgsql("Host=postgres;Port=5432;Username=postgres;Password=postgres;Database=postgres;"));
             }
 
             services.AddCors(options =>
             {
                 options.AddPolicy(MyAllowSpecificOrigins, builder =>
                 {
-                    builder.WithOrigins(
-                        "http://localhost:8080",
-                        "https://localhost:8080"
-                    ).AllowAnyHeader().AllowAnyMethod().AllowCredentials();
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                 });
             });
 
@@ -86,6 +85,11 @@ namespace web_api
                 app.UseDeveloperExceptionPage();
             }
             app.UseCors(MyAllowSpecificOrigins);
+            // global cors policy
+            //app.UseCors(x => x
+            //    .AllowAnyOrigin()
+            //    .AllowAnyMethod()
+            //    .AllowAnyHeader());
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
